@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="osmbonuspack-6.3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.MKergall/osmbonuspack/6.3/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.MKergall/osmbonuspack/6.3/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.MKergall/osmbonuspack/6.3/f7fc62ebf17281a23d655628af6b4fada225cf6b/osmbonuspack-6.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
