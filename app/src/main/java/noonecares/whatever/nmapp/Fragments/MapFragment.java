@@ -7,9 +7,20 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import org.osmdroid.api.IMapController;
+import org.osmdroid.tileprovider.modules.IFilesystemCache;
+import org.osmdroid.tileprovider.modules.SqlTileWriter;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.views.MapView;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.compass.CompassOverlay;
+import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
+import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 
+import noonecares.whatever.nmapp.MainActivity;
+import noonecares.whatever.nmapp.MapUtilClass;
 import noonecares.whatever.nmapp.R;
 
 
@@ -32,6 +43,10 @@ public class MapFragment extends Fragment {
     private Double longitude;
     private View view;
     private MapView mapView;
+    private IMapController mapController;
+    private CompassOverlay mCompassOverlay;
+    private RotationGestureOverlay mRotationGestureOverlay;
+    private Marker myLocation, destination;
 
     private OnFragmentInteractionListener mListener;
 
@@ -71,9 +86,45 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view =inflater.inflate(R.layout.fragment_map, container, false);
+
         mapView = (MapView) view.findViewById(R.id.map);
+        setupMap();
+
 
         return view;
+    }
+
+    private void setupMap() {
+        mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
+        mapView.setBuiltInZoomControls(true);
+        mapView.setMultiTouchControls(true);
+        mapView.setFlingEnabled(true);
+        mapController = mapView.getController();
+        myLocation = MapUtilClass.drawMarker(getArguments().getDouble(LATITUDE),getArguments().getDouble(LONGITUDE),getActivity().getApplicationContext(),mapView,R.drawable.destination_location,"You");
+
+        mCompassOverlay = new CompassOverlay(getActivity(), new InternalCompassOrientationProvider(getActivity()),mapView);
+        mCompassOverlay.enableCompass();
+        mapView.getOverlays().add(this.mCompassOverlay);
+
+        mRotationGestureOverlay = new RotationGestureOverlay(getActivity(), mapView);
+        mRotationGestureOverlay.setEnabled(true);
+        mapView.getOverlays().add(this.mRotationGestureOverlay);
+    }
+
+    private void purgeTileCache() {
+        IFilesystemCache tileWriter = mapView.getTileProvider().getTileWriter();
+        if (tileWriter instanceof SqlTileWriter) {
+            final boolean b = ((SqlTileWriter) tileWriter).purgeCache();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (b)
+                        Toast.makeText(getActivity(), "Cache Purge successful", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getActivity(), "Cache Purge failed", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

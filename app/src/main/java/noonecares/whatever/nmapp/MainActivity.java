@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,14 +16,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import org.osmdroid.tileprovider.modules.IFilesystemCache;
+import org.osmdroid.tileprovider.modules.SqlTileWriter;
+
+import noonecares.whatever.nmapp.ApiCalls.NetworkCalls;
 import noonecares.whatever.nmapp.Fragments.MapFragment;
 import noonecares.whatever.nmapp.Fragments.NoConnectionFragment;
 import noonecares.whatever.nmapp.Fragments.NoRouteFragment;
+import noonecares.whatever.nmapp.Location.GPSFinder;
 import noonecares.whatever.nmapp.Location.GetLocation;
 import noonecares.whatever.nmapp.permissionSupport.PermissionSupport;
 
-public class MainActivity extends AppCompatActivity implements GetLocation.LocationCallback, LocationListener {
+public class MainActivity extends AppCompatActivity implements GetLocation.LocationCallback, LocationListener, NetworkCalls.NetworkCallbackVolley {
 
     private FrameLayout mainFrame;
     private MapFragment mapFragment;
@@ -37,9 +44,14 @@ public class MainActivity extends AppCompatActivity implements GetLocation.Locat
         mainFrame = (FrameLayout) findViewById(R.id.mainFrame);
         if(ConnectionDetector.getConnectionDetector().isConnectedToInternet(getApplicationContext())){
             if(PermissionSupport.checkLocationAndStoragePermission(this, PermissionSupport.LOCATION_AND_STORAGE_PERMISSION_INITIAL)){
-                inflateMapFragment();
+                GPSFinder gpsFinder = new GPSFinder(this,this,this);
+                if(gpsFinder.getLocation() != null){
+                    inflateMapFragment(gpsFinder.getLatitude(),gpsFinder.getLongitude());
+                }else{
+
+                }
             }
-        }else{
+        } else{
             inflateFragment(noConnectionFragment);
         }
 
@@ -55,13 +67,23 @@ public class MainActivity extends AppCompatActivity implements GetLocation.Locat
         if(requestCode == PermissionSupport.LOCATION_AND_STORAGE_PERMISSION_INITIAL){
             if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                     ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+
                 // getLocation and inflate Fragment and also do tile caching
+                GPSFinder gpsFinder = new GPSFinder(this,this,this);
+                if(gpsFinder.getLocation() != null){
+                    inflateMapFragment(gpsFinder.getLatitude(),gpsFinder.getLongitude());
+                }else{
+
+                }
             }
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            else if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 // getLocation and inflate Fragment
-            }
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                // for caching tiles....look into it
+                GPSFinder gpsFinder = new GPSFinder(this,this,this);
+                if(gpsFinder.getLocation() != null){
+                    inflateMapFragment(gpsFinder.getLatitude(),gpsFinder.getLongitude());
+                }else{
+
+                }
             }
 
         }
@@ -72,8 +94,9 @@ public class MainActivity extends AppCompatActivity implements GetLocation.Locat
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void inflateMapFragment() {
-
+    private void inflateMapFragment(Double lat,Double lon) {
+        mapFragment = MapFragment.newInstance(lat,lon);
+        inflateFragment(mapFragment);
     }
 
     private void inflateFragment(Fragment fragment){
@@ -98,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements GetLocation.Locat
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.i("TINTIN","Location changed to " + location.toString() );
+        Log.i(NMAPPconstants.TAG,"Location changed to " + location.toString() );
     }
 
     @Override
@@ -113,6 +136,16 @@ public class MainActivity extends AppCompatActivity implements GetLocation.Locat
 
     @Override
     public void onProviderDisabled(String s) {
+
+    }
+
+    @Override
+    public void onSuccess() {
+
+    }
+
+    @Override
+    public void onError() {
 
     }
 }

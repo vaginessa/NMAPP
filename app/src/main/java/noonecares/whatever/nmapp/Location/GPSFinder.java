@@ -60,72 +60,72 @@ public class GPSFinder extends Activity {
 
 
 
-                Log.i("TINTIN", "both GPS and Network enabled");
+                Log.i(NMAPPconstants.TAG, "both GPS and Network enabled");
 
                     //request GPS updates
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    Log.i("TINTIN", gpsLocation.toString());
+                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
 
                     if(gpsLocation != null && System.currentTimeMillis()-gpsLocation.getTime() < 15000){
                         tempLocation = gpsLocation;
                         latitude = gpsLocation.getLatitude();
                         longitude = gpsLocation.getLongitude();
-                        Log.i("TINTIN","GPS Location");
-                        Log.i("TINTIN", latitude + "," + longitude);
+                        Log.i(NMAPPconstants.TAG,"GPS Location");
+                        Log.i(NMAPPconstants.TAG, latitude + "," + longitude);
                     }
 
                     // get Last known location from network provider
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     networkLocaion = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    Log.i("TINTIN", gpsLocation.toString());
+                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
 
                     if( networkLocaion != null && networkLocaion.getTime() > gpsLocation.getTime()){
                         tempLocation = networkLocaion;
                         latitude = gpsLocation.getLatitude();
                         longitude = gpsLocation.getLongitude();
-                        Log.i("TINTIN","Network Location");
-                        Log.i("TINTIN", latitude + "," + longitude);
+                        Log.i(NMAPPconstants.TAG,"Network Location");
+                        Log.i(NMAPPconstants.TAG, latitude + "," + longitude);
                     }
 
             } else if (isGPSEnabled){
 
-                Log.i("TINTIN", "GPS enabled");
+                Log.i(NMAPPconstants.TAG, "GPS enabled");
 
                 //try getting the last known location using GPS provider
                     //request GPS updates
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    Log.i("TINTIN", gpsLocation.toString());
+                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
                     tempLocation = gpsLocation;
                     if(gpsLocation != null && System.currentTimeMillis()-gpsLocation.getTime() < 15000){
                         latitude = gpsLocation.getLatitude();
                         longitude = gpsLocation.getLongitude();
-                        Log.i("TINTIN","GPS Location");
-                        Log.i("TINTIN", latitude + "," + longitude);
+                        Log.i(NMAPPconstants.TAG,"GPS Location");
+                        Log.i(NMAPPconstants.TAG, latitude + "," + longitude);
                     }
 
 
             } else if (isNetworkEnabled){
 
-                Log.i("TINTIN", "Network enabled");
+                Log.i(NMAPPconstants.TAG, "Network enabled");
 
                     // get Last known location from network provider
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     networkLocaion = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    Log.i("TINTIN", gpsLocation.toString());
+                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
                     tempLocation = networkLocaion;
                     if( networkLocaion != null && System.currentTimeMillis()-networkLocaion.getTime() <15000){
                         latitude = gpsLocation.getLatitude();
                         longitude = gpsLocation.getLongitude();
-                        Log.i("TINTIN","Network Location");
-                        Log.i("TINTIN", latitude + "," + longitude);
+                        Log.i(NMAPPconstants.TAG,"Network Location");
+                        Log.i(NMAPPconstants.TAG, latitude + "," + longitude);
                     }
 
 
             } else if (provider) {
 
-                Log.i("TINTIN", "using Passive provider");
+                Log.i(NMAPPconstants.TAG, "using Passive provider");
 
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
 
@@ -134,8 +134,8 @@ public class GPSFinder extends Activity {
                     if (passiveLocation != null && System.currentTimeMillis() - passiveLocation.getTime() < 150000) {
                         latitude = passiveLocation.getLatitude();
                         longitude = passiveLocation.getLongitude();
-                        Log.i("TINTIN","Passive Location");
-                        Log.i("TINTIN", latitude + "," + longitude);
+                        Log.i(NMAPPconstants.TAG,"Passive Location");
+                        Log.i(NMAPPconstants.TAG, latitude + "," + longitude);
                     }
 
 
@@ -147,15 +147,15 @@ public class GPSFinder extends Activity {
 //                tempLocation = networkLocaion;
 //                latitude = tempLocation.getLatitude();
 //                longitude = tempLocation.getLongitude();
-//                Log.i("TINTIN", "networkTime > GPSTime" );
-//                Log.i("TINTIN", latitude + "," + longitude);
+//                Log.i(NMAPPconstants.TAG, "networkTime > GPSTime" );
+//                Log.i(NMAPPconstants.TAG, latitude + "," + longitude);
 //
 //            }else if ( gpsLocation != null && networkLocaion != null && networkLocaion.getTime() < gpsLocation.getTime()){
 //                tempLocation = gpsLocation;
 //                latitude = tempLocation.getLatitude();
 //                longitude = tempLocation.getLongitude();
-//                Log.i("TINTIN", "networkTime < GPSTime" );
-//                Log.i("TINTIN", latitude + "," + longitude);
+//                Log.i(NMAPPconstants.TAG, "networkTime < GPSTime" );
+//                Log.i(NMAPPconstants.TAG, latitude + "," + longitude);
 //            }
         }
         return tempLocation;

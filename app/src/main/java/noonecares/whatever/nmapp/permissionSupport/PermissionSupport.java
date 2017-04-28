@@ -10,6 +10,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import noonecares.whatever.nmapp.NMAPPconstants;
+
 /**
  * Created by justdial on 4/17/17.
  */
@@ -20,14 +22,14 @@ public class PermissionSupport {
 
     public static boolean checkLocationAndStoragePermission(Activity activity, int requestCode){
 
-        Log.i("TINTIN", "checking permissions");
+        Log.i(NMAPPconstants.TAG, "checking permissions");
         List<String> permissions = new ArrayList<>();
         if(ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            Log.i("TINTIN", "Location permissions not granted, so asking");
+            Log.i(NMAPPconstants.TAG, "Location permissions not granted, so asking");
             permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
         if(ContextCompat.checkSelfPermission(activity,Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            Log.i("TINTIN", "Write ext. storage permissions not granted, so asking");
+            Log.i(NMAPPconstants.TAG, "Write ext. storage permissions not granted, so asking");
             permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
 
