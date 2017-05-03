@@ -29,6 +29,7 @@ public class GPSFinder extends Activity {
     private Location gpsLocation = null, networkLocaion = null ,passiveLocation= null;
     private Location tempLocation = null;
     private double latitude, longitude;
+    Boolean provider;
     // Location Update request params
     public static int LOCATION_UPDATE_TIME = 5* 60 *1000 ; //5 minute
     public static int LOCATION_UPDATE_DISTANCE = 5; //1 meter
@@ -37,6 +38,10 @@ public class GPSFinder extends Activity {
         this.mActivity = mActivity;
         this.mcontext = mcontext;
         this.locationListener = locationListener;
+        locationManager = (LocationManager) mcontext.getSystemService(LOCATION_SERVICE);
+        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        provider = locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER);
+        isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
     /* getLocation Logic
@@ -50,20 +55,15 @@ public class GPSFinder extends Activity {
     *   else                           -> tempLocation == null
     *
     * */
-    public Location getLocation() {
+    public Location getLastknownLocation() {
         if(ContextCompat.checkSelfPermission(mcontext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            locationManager = (LocationManager) mcontext.getSystemService(LOCATION_SERVICE);
-            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            Boolean provider = locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER);
-            isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
             if(isGPSEnabled && isNetworkEnabled){
-
-
 
                 Log.i(NMAPPconstants.TAG, "both GPS and Network enabled");
 
                     //request GPS updates
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
+//                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     Log.i(NMAPPconstants.TAG, gpsLocation.toString());
 
@@ -76,7 +76,7 @@ public class GPSFinder extends Activity {
                     }
 
                     // get Last known location from network provider
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
+//                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     networkLocaion = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     Log.i(NMAPPconstants.TAG, gpsLocation.toString());
 
@@ -94,7 +94,7 @@ public class GPSFinder extends Activity {
 
                 //try getting the last known location using GPS provider
                     //request GPS updates
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
+//                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                     Log.i(NMAPPconstants.TAG, gpsLocation.toString());
                     tempLocation = gpsLocation;
@@ -111,7 +111,7 @@ public class GPSFinder extends Activity {
                 Log.i(NMAPPconstants.TAG, "Network enabled");
 
                     // get Last known location from network provider
-                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
+//                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     networkLocaion = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                     Log.i(NMAPPconstants.TAG, gpsLocation.toString());
                     tempLocation = networkLocaion;
@@ -127,7 +127,7 @@ public class GPSFinder extends Activity {
 
                 Log.i(NMAPPconstants.TAG, "using Passive provider");
 
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
+//                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
 
                     passiveLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
                     tempLocation = passiveLocation;
@@ -161,6 +161,19 @@ public class GPSFinder extends Activity {
         return tempLocation;
     }
 
+    public void requestLocationUpdates(long minTime, float minDistance) {
+        if(ContextCompat.checkSelfPermission(mcontext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, locationListener);
+        }
+    }
+
+    public void removeUpdates(){
+        if(ContextCompat.checkSelfPermission(mcontext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            locationManager.removeUpdates(locationListener);
+        }
+    }
+
     /*Stop using GPS listener Calling this function will stop using GPS in your app*/
     public void stopUsingGPS() {
         if (locationManager != null) {
@@ -187,5 +200,13 @@ public class GPSFinder extends Activity {
             longitude = tempLocation.getLongitude();
         }
         return longitude;
+    }
+
+    public boolean isGPSEnabled()
+    {
+        locationManager = (LocationManager) mcontext.getSystemService(LOCATION_SERVICE);
+        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        return (isGPSEnabled || isNetworkEnabled);
     }
 }

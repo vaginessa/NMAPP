@@ -12,7 +12,7 @@ import org.osmdroid.views.overlay.Marker;
  */
 @SuppressLint("NewApi")
 
-public class MapUtilClass {
+public class MapUtil {
 
     public static Marker drawMarker(Double lat, Double lon, Context context, MapView mapView, int markerImage, String title) {
         GeoPoint point = new GeoPoint(lat,lon);
