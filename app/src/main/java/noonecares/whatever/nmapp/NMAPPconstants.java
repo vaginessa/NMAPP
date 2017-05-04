@@ -16,5 +16,6 @@ public class NMAPPconstants {
     public static String COMPANY_NAME = "NMAPP";
     public static String GPS_DISABLED_MSG = "Please turn on the location from settings...";
     public static String FETCHING_LOCATION = "Fetching location ...";
+    public static String STILL_NO_INTERNET = "Still no internet...";
 }
 

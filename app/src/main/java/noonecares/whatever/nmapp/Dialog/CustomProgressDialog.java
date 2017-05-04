@@ -13,7 +13,7 @@ import noonecares.whatever.nmapp.R;
 
 public class CustomProgressDialog {
 
-	public static Dialog showProgressDialog(Context currentContext, String dialogText){
+	public static Dialog ProgressDialog(Context currentContext, String dialogText){
 		Dialog dialog = null;
 		if(currentContext != null)
 		{

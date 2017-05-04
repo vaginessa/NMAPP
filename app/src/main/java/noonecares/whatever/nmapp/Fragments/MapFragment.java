@@ -20,7 +20,7 @@ import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 
 import noonecares.whatever.nmapp.MainActivity;
-import noonecares.whatever.nmapp.MapUtilClass;
+import noonecares.whatever.nmapp.MapUtil;
 import noonecares.whatever.nmapp.R;
 
 
@@ -100,7 +100,7 @@ public class MapFragment extends Fragment {
         mapView.setMultiTouchControls(true);
         mapView.setFlingEnabled(true);
         mapController = mapView.getController();
-        myLocation = MapUtilClass.drawMarker(getArguments().getDouble(LATITUDE),getArguments().getDouble(LONGITUDE),getActivity().getApplicationContext(),mapView,R.drawable.destination_location,"You");
+        myLocation = MapUtil.drawMarker(getArguments().getDouble(LATITUDE),getArguments().getDouble(LONGITUDE),getActivity().getApplicationContext(),mapView,R.drawable.destination_location,"You");
 
         mCompassOverlay = new CompassOverlay(getActivity(), new InternalCompassOrientationProvider(getActivity()),mapView);
         mCompassOverlay.enableCompass();
@@ -130,7 +130,7 @@ public class MapFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onMapFragmentInteraction(uri);
         }
     }
 
@@ -163,6 +163,6 @@ public class MapFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onMapFragmentInteraction(Uri uri);
     }
 }

@@ -8,20 +8,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tryAgainButton"
-        android:layout_centerInParent="true"
-        android:text="Try Again"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tryAgainButton"
+            android:text="@string/try_again"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="100dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tryAgainTextView"
             android:layout_centerHorizontal="true"
-            android:text="No Network Connectivity..."
-            android:layout_below="@id/tryAgainButton" />
+            android:text="@string/no_network_connectivity"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="75dp"
+            android:textColor="@color/colorPrimary"
+            />
 
     </RelativeLayout>
 

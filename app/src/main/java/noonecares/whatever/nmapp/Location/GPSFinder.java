@@ -65,7 +65,7 @@ public class GPSFinder extends Activity {
                     //request GPS updates
 //                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
+//                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
 
                     if(gpsLocation != null && System.currentTimeMillis()-gpsLocation.getTime() < 15000){
                         tempLocation = gpsLocation;
@@ -78,9 +78,9 @@ public class GPSFinder extends Activity {
                     // get Last known location from network provider
 //                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     networkLocaion = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
+//                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
 
-                    if( networkLocaion != null && networkLocaion.getTime() > gpsLocation.getTime()){
+                    if( networkLocaion != null && gpsLocation != null && networkLocaion.getTime() > gpsLocation.getTime()){
                         tempLocation = networkLocaion;
                         latitude = gpsLocation.getLatitude();
                         longitude = gpsLocation.getLongitude();
@@ -96,7 +96,7 @@ public class GPSFinder extends Activity {
                     //request GPS updates
 //                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     gpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
+//                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
                     tempLocation = gpsLocation;
                     if(gpsLocation != null && System.currentTimeMillis()-gpsLocation.getTime() < 15000){
                         latitude = gpsLocation.getLatitude();
@@ -113,7 +113,7 @@ public class GPSFinder extends Activity {
                     // get Last known location from network provider
 //                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_UPDATE_TIME, LOCATION_UPDATE_DISTANCE, locationListener);
                     networkLocaion = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
+//                    Log.i(NMAPPconstants.TAG, gpsLocation.toString());
                     tempLocation = networkLocaion;
                     if( networkLocaion != null && System.currentTimeMillis()-networkLocaion.getTime() <15000){
                         latitude = gpsLocation.getLatitude();
