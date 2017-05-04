@@ -166,7 +166,10 @@ public class MainActivity extends AppCompatActivity implements GetLocation.Locat
     public void onLocationChanged(Location location) {
         Log.i(NMAPPconstants.TAG,"Location changed to " + location.toString() );
         Log.i(NMAPPconstants.TAG,location.getLatitude() + " , " + location.getLongitude());
-
+        if(locProgressDialog != null)
+        {
+            locProgressDialog.hide();
+        }
         NMAPPUtil.inflateMapFragment(this,location.getLatitude(),location.getLongitude(),splashLay);
         gpsFinder.removeUpdates();
     }

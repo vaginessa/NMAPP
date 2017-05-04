@@ -96,7 +96,7 @@ public class MapFragment extends Fragment {
 
     private void setupMap() {
         mapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
-        mapView.setBuiltInZoomControls(true);
+//        mapView.setBuiltInZoomControls(true);
         mapView.setMultiTouchControls(true);
         mapView.setFlingEnabled(true);
         mapController = mapView.getController();
